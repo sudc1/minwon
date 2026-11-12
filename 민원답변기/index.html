@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>수원도시공사 민원 답변 초안기</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-label="민원 답변 초안 작성 보조도구">
+        <header class="topbar">
+          <div class="brand-block">
+            <img src="assets/suwon-logo.png" alt="수원도시공사" class="brand-logo" />
+            <div class="title-block">
+              <h1>민원 답변 초안기</h1>
+              <p>담당자 검토 전 참고용 문안을 작성하는 내부 보조도구입니다.</p>
+            </div>
+          </div>
+          <button class="ghost-button" id="resetButton" type="button">초기화</button>
+        </header>
+
+        <section class="notice-band" aria-label="이용 전 확인사항">
+          <strong>이용 전 확인</strong>
+          <span>본 도구는 공식 답변을 자동 확정하지 않습니다. 개인정보 입력을 피하고, 최종 등록 전 사실관계·관련 규정·조치 가능 여부를 반드시 담당자가 검토해 주세요.</span>
+        </section>
+
+        <div class="editor-grid">
+          <form class="panel input-panel" id="complaintForm">
+            <div class="section-title">
+              <h2>민원 정보</h2>
+              <span>개인정보 제외</span>
+            </div>
+
+            <label>
+              민원 제목
+              <input id="title" type="text" placeholder="예: 장안구민회관 수영장 타일 위생 관련" />
+            </label>
+
+            <div class="field-row">
+              <label>
+                처리 부서
+                <select id="department">
+                  <option value="">부서를 선택하세요</option>
+                  <option value="스마트주차운영처(공영주차장)">스마트주차운영처(공영주차장)</option>
+                  <option value="교통약자지원센터">교통약자지원센터</option>
+                  <option value="교통시설운영처(환승센터 등)">교통시설운영처(환승센터 등)</option>
+                  <option value="연화장">연화장</option>
+                  <option value="자원순환센터">자원순환센터</option>
+                  <option value="장안구민회관">장안구민회관</option>
+                  <option value="종합운동장">종합운동장</option>
+                  <option value="화산체육공원">화산체육공원</option>
+                  <option value="광교체육관(광교웰빙국민체육센터)">광교체육관(광교웰빙국민체육센터)</option>
+                  <option value="가족여성회관">가족여성회관</option>
+                  <option value="장기요양지원센터">장기요양지원센터</option>
+                  <option value="더함파크(청사)">더함파크(청사)</option>
+                </select>
+              </label>
+              <label>
+                담당 연락처
+                <input id="phone" type="text" placeholder="예: 031-240-3028" />
+              </label>
+            </div>
+
+            <div class="field-row">
+              <label>
+                민원 유형
+                <select id="category">
+                  <option value="facility">시설물 관리</option>
+                  <option value="hygiene">위생·환경</option>
+                  <option value="operation">운영·이용 안내</option>
+                  <option value="parking">주차·교통</option>
+                  <option value="staff">직원 응대</option>
+                  <option value="safety">안전 관리</option>
+                  <option value="other">기타</option>
+                </select>
+              </label>
+              <label>
+                답변 톤
+                <select id="tone">
+                  <option value="balanced">정중·중립</option>
+                  <option value="firm">정중·명확</option>
+                  <option value="warm">정중·공감</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              민원 요지
+              <textarea id="summary" rows="5" placeholder="개인정보는 제외하고 민원인이 제기한 불편, 요청, 문제 상황만 적어주세요."></textarea>
+            </label>
+
+            <label>
+              조치 내용 또는 예정 사항
+              <textarea id="actions" rows="5" placeholder="이미 조치한 사항, 향후 계획, 검토 중인 내용을 메모하듯 적어주세요."></textarea>
+            </label>
+
+            <div class="privacy-note">
+              성명, 휴대전화번호, 주소, 차량번호 전체, 계좌번호 등 개인정보는 입력하지 마세요.
+            </div>
+
+            <div class="switch-row">
+              <label class="checkbox-label">
+                <input id="includeDeadline" type="checkbox" checked />
+                처리기한 문구 포함
+              </label>
+              <label class="checkbox-label">
+                <input id="includeClosing" type="checkbox" checked />
+                환경 개선 마무리 포함
+              </label>
+            </div>
+
+            <button class="secondary-button" id="sampleButton" type="button">첨부 사례 예시 입력</button>
+            <button class="primary-button" type="submit">참고 초안 생성</button>
+          </form>
+
+          <section class="panel output-panel" aria-label="생성된 답변 참고 초안">
+            <div class="section-title">
+              <h2>답변 참고 초안</h2>
+              <button class="copy-button" id="copyButton" type="button">복사</button>
+            </div>
+            <div class="draft-box" id="draftOutput" aria-live="polite"></div>
+
+            <div class="review-box">
+              <h3>최종 등록 전 확인</h3>
+              <ul id="reviewList"></ul>
+            </div>
+
+            <div class="approval-box">
+              <h3>담당자 검토 체크리스트</h3>
+              <label><input type="checkbox" /> 민원 내용에 개인정보가 포함되지 않았거나 필요한 범위로 마스킹했습니다.</label>
+              <label><input type="checkbox" /> 사실관계, 현장 확인 내용, 관련 규정 또는 운영 기준을 확인했습니다.</label>
+              <label><input type="checkbox" /> 과실 인정, 배상 약속, 단정적 표현이 없는지 확인했습니다.</label>
+              <label><input type="checkbox" /> 조치 가능 여부와 예정 시기를 담당 부서 기준으로 확인했습니다.</label>
+              <label><input type="checkbox" /> 최종 답변은 담당자 또는 내부 승인 절차에 따라 검토 후 등록합니다.</label>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
